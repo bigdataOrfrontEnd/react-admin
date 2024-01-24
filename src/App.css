@@ -16,6 +16,7 @@
   padding: 0;
 }
 .App {
+  color: var(--black);
   background: linear-gradient(
     106.37deg,
     #ffe1bc 29.63%,
@@ -23,4 +24,46 @@
     #f3c6f1 90.85%
   );
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+}
+.App > .AppGlass {
+  background-color: var(--glass);
+  width: 97%;
+  height: 97%;
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.App > .AppGlass > :first-child,
+.App > .AppGlass > :last-child {
+  flex-basis: 11rem;
+}
+.App > .AppGlass > :nth-child(2) {
+  flex-grow: 1;
+}
+@media screen and (max-width: 1200px) {
+  .App > .AppGlass {
+    overflow-y: scroll;
+  }
+  .App > .AppGlass > :first-child,
+  .App > .AppGlass > :last-child {
+    flex-basis: 10%;
+  }
+  .App > .AppGlass > :nth-child(2) {
+    flex-grow: 1;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .App > .AppGlass > :first-child {
+    display: none;
+  }
+  .App > .AppGlass {
+    flex-direction: column;
+  }
 }
