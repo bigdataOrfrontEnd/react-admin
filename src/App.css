@@ -60,9 +60,9 @@
 }
 
 @media screen and (max-width: 768px) {
-  .App > .AppGlass > :first-child {
+  /* .App > .AppGlass > :first-child {
     display: none;
-  }
+  } */
   .App > .AppGlass {
     flex-direction: column;
   }
