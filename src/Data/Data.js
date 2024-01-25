@@ -22,6 +22,7 @@ export const SidebarData = [
   {
     icon: UilEstate,
     heading: "Dashboard",
+    path: "",
   },
   {
     icon: UilClipboardAlt,
