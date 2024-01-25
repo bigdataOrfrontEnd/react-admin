@@ -1,0 +1,9 @@
+.card {
+  flex: 1;
+  border-radius: 0.7rem;
+  padding: 1rem;
+  background-color: red;
+}
+.cardItem {
+  height: 7rem;
+}

@@ -9,9 +9,9 @@ export default function SiderBar() {
   const [select, SetSelect] = useState(0);
   return (
     <div>
-      {/* <div>
-      <UilBars/>
-    </div> */}
+      <div className="bar">
+        <UilBars />
+      </div>
       <motion.div className="sidebar">
         {/* logo */}
         <div className="logo">

@@ -1,0 +1,12 @@
+.MainDash {
+  padding-top: 4rem;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-evenly; */
+}
+.MainDash h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 5rem;
+}

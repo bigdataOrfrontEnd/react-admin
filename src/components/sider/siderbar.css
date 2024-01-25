@@ -58,6 +58,12 @@
   position: absolute;
   bottom: -10rem;
 }
+.bar {
+  display: none;
+  position: absolute;
+  left: 10rem;
+  top: 4rem;
+}
 /* Tablets */
 @media screen and (max-width: 1200px) {
   .menuItem > span {
@@ -68,4 +74,7 @@
   }
 }
 @media screen and (max-width: 768px) {
+  .bar {
+    display: block;
+  }
 }
