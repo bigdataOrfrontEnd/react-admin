@@ -6,7 +6,7 @@ export default function MainDash() {
     <div className="MainDash">
       <h1>Dashboard</h1>
       <Cards />
-      <div>table</div>
+      <div>显示答案</div>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { cardsData } from "../../Data/Data";
 export default function Cards() {
   return (
     <div className="cards">
-      {cardsData.map((card) => {
+      {cardsData.map((card, index) => {
         return (
           <Card
             title={card.title}
@@ -14,6 +14,7 @@ export default function Cards() {
             value={card.value}
             png={card.png}
             series={card.series}
+            key={index}
           />
         );
       })}
