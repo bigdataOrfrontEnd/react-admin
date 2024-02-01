@@ -22,11 +22,12 @@ export const SidebarData = [
   {
     icon: UilEstate,
     heading: "Dashboard",
-    path: "",
+    path: "/",
   },
   {
     icon: UilClipboardAlt,
     heading: "Orders",
+    path: "/expenss",
   },
   {
     icon: UilUsersAlt,
