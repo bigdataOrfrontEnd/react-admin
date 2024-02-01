@@ -13,7 +13,7 @@ function App() {
           <Route path="/" element={<MainDash />}></Route>
           <Route path="/expenss" element={<RightSide />}></Route>
         </Routes>
-        {/* <MainDash />
+        {/* <MainDash />  
         <RightSide /> */}
       </div>
     </div>

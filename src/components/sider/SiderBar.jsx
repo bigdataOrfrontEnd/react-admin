@@ -3,9 +3,11 @@ import { UilBars, UilSignOutAlt } from "@iconscout/react-unicons";
 import Logo from "../../imgs/logo.png";
 import { SidebarData } from "../../Data/Data";
 import { motion } from "framer-motion";
+import {useNavigate} from "react-router-dom"
 
 import "./siderbar.css";
 export default function SiderBar() {
+  const navigate=useNavigate()
   //控制鼠标选中
   const [select, SetSelect] = useState(0);
   return (
@@ -30,6 +32,7 @@ export default function SiderBar() {
                 key={index}
                 onClick={() => {
                   SetSelect(index);
+                  navigate(item.path)
                 }}
               >
                 <item.icon />
