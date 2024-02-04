@@ -8,5 +8,6 @@ module.exports = {
       // 约定
       "@": path.resolve(__dirname, "src"),
     },
+    plugins,
   },
 };
