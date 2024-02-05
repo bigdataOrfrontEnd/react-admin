@@ -1,6 +1,7 @@
 // 通过 craco插件 修改create-react-app 创建的脚手架webpack
 const path = require("path");
-
+const ModuleFederationPlugin =
+  require("webpack").container.ModuleFederationPlugin;
 module.exports = {
   // webpack 配置
   webpack: {
@@ -8,6 +9,6 @@ module.exports = {
       // 约定
       "@": path.resolve(__dirname, "src"),
     },
-    plugins,
+    plugins: [],
   },
 };
