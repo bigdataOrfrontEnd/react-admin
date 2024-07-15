@@ -32,6 +32,7 @@ export const SidebarData = [
   {
     icon: UilUsersAlt,
     heading: "Customers",
+    path:"/modal"
   },
   {
     icon: UilPackage,
