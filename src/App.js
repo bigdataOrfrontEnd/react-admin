@@ -3,6 +3,7 @@ import MainDash from "./components/main/MainDash";
 import RightSide from "./components/right/RightSide";
 import SiderBar from "./components/sider/SiderBar";
 import Modall from "./components/Modal/index";
+import Tabled from "./components/TableED/index";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -16,6 +17,7 @@ function App() {
           <Route path="/login" element={<MainDash />}></Route>
           <Route path="/expenss" element={<RightSide />}></Route>
           <Route path="/modal" element={<Modall />}></Route>
+          <Route path="/tabke" element={<Tabled />}></Route>
         </Routes>
         {/* <MainDash />  
         <RightSide /> */}

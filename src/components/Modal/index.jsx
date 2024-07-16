@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { Modal, Button } from 'antd';
-import FormChild from './ModalForm';
+import React, { useState, useRef } from "react";
+import { Modal, Button } from "antd";
+import FormChild from "./ModalForm";
 
 const ParentComponent = () => {
   const [visible, setVisible] = useState(false);
@@ -12,13 +12,16 @@ const ParentComponent = () => {
 
   const handleOk = () => {
     if (formRef.current) {
-      formRef.current.validateFields().then(values => {
-        console.log('Form values:', values);
-        setVisible(false);
-        formRef.current.resetFields();
-      }).catch(info => {
-        console.log('Validate Failed:', info);
-      });
+      formRef.current
+        .validateFields()
+        .then((values) => {
+          console.log("Form values:", values);
+          setVisible(false);
+          formRef.current.resetFields();
+        })
+        .catch((info) => {
+          console.log("Validate Failed:", info);
+        });
     }
   };
 
@@ -34,6 +37,7 @@ const ParentComponent = () => {
       <Button type="primary" onClick={showModal}>
         Open Modal
       </Button>
+
       <Modal
         title="Form in Modal"
         visible={visible}
