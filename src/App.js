@@ -11,9 +11,9 @@ function App() {
   return (
     <div className="App">
       <div className="AppGlass">
-        {/* <SiderBar /> */}
+        <SiderBar />
         <Routes>
-          <Route path="/" element={<Login />}></Route>
+          {/* <Route path="/" element={<Login />}></Route> */}
           <Route path="/login" element={<MainDash />}></Route>
           <Route path="/expenss" element={<RightSide />}></Route>
           <Route path="/modal" element={<Modall />}></Route>

@@ -32,11 +32,12 @@ export const SidebarData = [
   {
     icon: UilUsersAlt,
     heading: "Customers",
-    path:"/modal"
+    path: "/modal",
   },
   {
     icon: UilPackage,
     heading: "Products",
+    path: "/tabke",
   },
   {
     icon: UilChart,
