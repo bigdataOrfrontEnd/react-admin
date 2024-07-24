@@ -4,7 +4,7 @@ import RightSide from "./components/right/RightSide";
 import SiderBar from "./components/sider/SiderBar";
 import Modall from "./components/Modal/index";
 import Tabled from "./components/TableED/index";
-import Page from "./components/pagnition/index"
+import Page from "./components/Tab/index"
 import { Routes, Route } from "react-router-dom";
 
 function App() {
