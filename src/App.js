@@ -4,7 +4,7 @@ import RightSide from "./components/right/RightSide";
 import SiderBar from "./components/sider/SiderBar";
 import Modall from "./components/Modal/index";
 import Tabled from "./components/TableED/index";
-
+import Page from "./components/pagnition/index"
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
           <Route path="/expenss" element={<RightSide />}></Route>
           <Route path="/modal" element={<Modall />}></Route>
           <Route path="/tabke" element={<Tabled />}></Route>
+          <Route path="/page" element={<Page/>}></Route>
         </Routes>
         {/* <MainDash />  
         <RightSide /> */}
