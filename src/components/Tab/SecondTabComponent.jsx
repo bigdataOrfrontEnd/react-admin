@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const SecondTabComponent = ({selectedRowKey }) => {
+const SecondTabComponent = ({selectedRowKey,refresh }) => {
   const [data, setData] = useState(null);
 
   const fetchData = async () => {
@@ -14,7 +14,7 @@ const SecondTabComponent = ({selectedRowKey }) => {
 
   useEffect(() => {
     fetchData();
-  }, [selectedRowKey]);
+  }, [selectedRowKey,refresh]);
 
   return (
     <div>
