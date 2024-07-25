@@ -1,28 +1,76 @@
 import React, { useState, useEffect, useRef } from "react";
-import {Pagination, Table } from 'antd';
+import { Pagination, Table } from "antd";
 const dataSource = [
   // 模拟数据
-  { key: '1', name: 'John Brown', age: 32, address: 'New York No. 1 Lake Park' },
-  { key: '2', name: 'Jim Green', age: 42, address: 'London No. 1 Lake Park' },
-  { key: '1', name: 'John Brown', age: 32, address: 'New York No. 1 Lake Park' },
-  { key: '2', name: 'Jim Green', age: 42, address: 'London No. 1 Lake Park' },
-  { key: '1', name: 'John Brown', age: 32, address: 'New York No. 1 Lake Park' },
-  { key: '2', name: 'Jim Green', age: 42, address: 'London No. 1 Lake Park' },
-  { key: '1', name: 'John Brown', age: 32, address: 'New York No. 1 Lake Park' },
-  { key: '2', name: 'Jim Green', age: 42, address: 'London No. 1 Lake Park' },
-  { key: '1', name: 'John Brown', age: 32, address: 'New York No. 1 Lake Park' },
-  { key: '2', name: 'Jim Green', age: 42, address: 'London No. 1 Lake Park' },{ key: '1', name: 'John Brown', age: 32, address: 'New York No. 1 Lake Park' },
-  { key: '2', name: 'Jim Green', age: 42, address: 'London No. 1 Lake Park' },{ key: '1', name: 'John Brown', age: 32, address: 'New York No. 1 Lake Park' },
-  { key: '2', name: 'Jim Green', age: 42, address: 'London No. 1 Lake Park' },{ key: '1', name: 'John Brown', age: 32, address: 'New York No. 1 Lake Park' },
-  { key: '2', name: 'Jim Green', age: 42, address: 'London No. 1 Lake Park' },{ key: '1', name: 'John Brown', age: 32, address: 'New York No. 1 Lake Park' },
-  { key: '2', name: 'Jim Green', age: 42, address: 'London No. 1 Lake Park' },
-  
+  {
+    key: "1",
+    name: "John Brown",
+    age: 32,
+    address: "New York No. 1 Lake Park",
+  },
+  { key: "2", name: "Jim Green", age: 42, address: "London No. 1 Lake Park" },
+  {
+    key: "1",
+    name: "John Brown",
+    age: 32,
+    address: "New York No. 1 Lake Park",
+  },
+  { key: "2", name: "Jim Green", age: 42, address: "London No. 1 Lake Park" },
+  {
+    key: "1",
+    name: "John Brown",
+    age: 32,
+    address: "New York No. 1 Lake Park",
+  },
+  { key: "2", name: "Jim Green", age: 42, address: "London No. 1 Lake Park" },
+  {
+    key: "1",
+    name: "John Brown",
+    age: 32,
+    address: "New York No. 1 Lake Park",
+  },
+  { key: "2", name: "Jim Green", age: 42, address: "London No. 1 Lake Park" },
+  {
+    key: "1",
+    name: "John Brown",
+    age: 32,
+    address: "New York No. 1 Lake Park",
+  },
+  { key: "2", name: "Jim Green", age: 42, address: "London No. 1 Lake Park" },
+  {
+    key: "1",
+    name: "John Brown",
+    age: 32,
+    address: "New York No. 1 Lake Park",
+  },
+  { key: "2", name: "Jim Green", age: 42, address: "London No. 1 Lake Park" },
+  {
+    key: "1",
+    name: "John Brown",
+    age: 32,
+    address: "New York No. 1 Lake Park",
+  },
+  { key: "2", name: "Jim Green", age: 42, address: "London No. 1 Lake Park" },
+  {
+    key: "1",
+    name: "John Brown",
+    age: 32,
+    address: "New York No. 1 Lake Park",
+  },
+  { key: "2", name: "Jim Green", age: 42, address: "London No. 1 Lake Park" },
+  {
+    key: "1",
+    name: "John Brown",
+    age: 32,
+    address: "New York No. 1 Lake Park",
+  },
+  { key: "2", name: "Jim Green", age: 42, address: "London No. 1 Lake Park" },
 ];
 
 const columns = [
-  { title: 'Name', dataIndex: 'name', key: 'name' },
-  { title: 'Age', dataIndex: 'age', key: 'age' },
-  { title: 'Address', dataIndex: 'address', key: 'address' },
+  { title: "Name", dataIndex: "name", key: "name" },
+  { title: "Age", dataIndex: "age", key: "age" },
+  { title: "Address", dataIndex: "address", key: "address" },
 ];
 export default function () {
   const {
@@ -41,16 +89,19 @@ export default function () {
   }, [setTotalItemsCount]);
 
   const handlePageChange = (page, pageSize) => {
-    console.log(page,pageSize);
+    console.log(page, pageSize);
     goToPage(page);
     setItemsPerPage(pageSize);
   };
-  
+
   return (
     <div>
       111
       <Table
-        dataSource={dataSource.slice((currentPage - 1) * pageSize, currentPage * pageSize)}
+        dataSource={dataSource.slice(
+          (currentPage - 1) * pageSize,
+          currentPage * pageSize
+        )}
         columns={columns}
         pagination={false}
       />
@@ -58,10 +109,10 @@ export default function () {
         current={currentPage}
         pageSize={pageSize}
         total={totalItems}
-        onChange={handlePageChange}
+        onChange={goToPage} //在goToPage中去判断是页面个数变化还是当前页变化
         //useEffect的监听去掉，然后在onChange里面调用接口，
         showSizeChanger
-        // onShowSizeChange={(curnet,size)=>setItemsPerPage(size)}
+        // onShowSizeChange={(curnet,size)=>setItemsPerPage(size)}，这个不用
       />
     </div>
   );
@@ -72,10 +123,18 @@ function usePage(initalPage = 1, initPagesize = 10) {
   const [totalItems, setTotalItems] = useState(50); //总页数
   const totalPages = Math.ceil(totalItems / pageSize);
   //设置当前页
-  const goToPage = (page) => {
-    if (page < 1) page = 1;
-    if (page > totalPages) page = totalPages;
-    setCurrentPage(page);
+
+  const goToPage = (page, size) => {
+    if (page != currentPage) {
+      setCurrentPage(page);
+    }
+    if (pageSize != size) {
+      setPageSize(size);
+      setCurrentPage(1);
+    }
+    // if (page < 1) page = 1;
+    // if (page > totalPages) page = totalPages;
+    // setCurrentPage(page);
   };
   // 设置每页条数
   const setItemsPerPage = (itemPerPage) => {
@@ -99,6 +158,6 @@ function usePage(initalPage = 1, initPagesize = 10) {
     setItemsPerPage,
     setTotalItemsCount,
     setCurrentPage,
-    resetToFirstPage
+    resetToFirstPage,
   };
 }
