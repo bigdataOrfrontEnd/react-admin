@@ -4,7 +4,9 @@ import RightSide from "./components/right/RightSide";
 import SiderBar from "./components/sider/SiderBar";
 import Modall from "./components/Modal/index";
 import Tabled from "./components/TableED/index";
-import Page from "./components/Tab/index"
+// import Page from "./components/Tab/index"//tab切换
+import Page from "./components/TableED/index"//table表格编辑
+
 import { Routes, Route } from "react-router-dom";
 
 function App() {

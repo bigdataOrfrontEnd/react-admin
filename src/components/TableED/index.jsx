@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Button, Form, Input, Popconfirm, Table } from "antd";
+import { Button, Form, Input, Table } from "antd";
 const EditableContext = React.createContext(null);
+// 定义可编辑行组件
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
   return (
@@ -11,6 +12,7 @@ const EditableRow = ({ index, ...props }) => {
     </Form>
   );
 };
+// 定义可编辑单元格组件：
 const EditableCell = ({
   title,
   editable,
@@ -92,11 +94,11 @@ const App = () => {
       address: "London, Park Lane no. 1",
     },
   ]);
-  const [count, setCount] = useState(2);
-  const handleDelete = (key) => {
-    const newData = dataSource.filter((item) => item.key !== key);
-    setDataSource(newData);
-  };
+  // const [count, setCount] = useState(2);
+  // const handleDelete = (key) => {
+  //   const newData = dataSource.filter((item) => item.key !== key);
+  //   setDataSource(newData);
+  // };
   const defaultColumns = [
     {
       title: "name",
@@ -112,30 +114,30 @@ const App = () => {
       title: "address",
       dataIndex: "address",
     },
-    {
-      title: "operation",
-      dataIndex: "operation",
-      render: (_, record) =>
-        dataSource.length >= 1 ? (
-          <Popconfirm
-            title="Sure to delete?"
-            onConfirm={() => handleDelete(record.key)}
-          >
-            <a>Delete</a>
-          </Popconfirm>
-        ) : null,
-    },
+    // {
+    //   title: "operation",
+    //   dataIndex: "operation",
+    //   render: (_, record) =>
+    //     dataSource.length >= 1 ? (
+    //       <Popconfirm
+    //         title="Sure to delete?"
+    //         onConfirm={() => handleDelete(record.key)}
+    //       >
+    //         <a>Delete</a>
+    //       </Popconfirm>
+    //     ) : null,
+    // },
   ];
-  const handleAdd = () => {
-    const newData = {
-      key: count,
-      name: `Edward King ${count}`,
-      age: "32",
-      address: `London, Park Lane no. ${count}`,
-    };
-    setDataSource([...dataSource, newData]);
-    setCount(count + 1);
-  };
+  // const handleAdd = () => {
+  //   const newData = {
+  //     key: count,
+  //     name: `Edward King ${count}`,
+  //     age: "32",
+  //     address: `London, Park Lane no. ${count}`,
+  //   };
+  //   setDataSource([...dataSource, newData]);
+  //   setCount(count + 1);
+  // };
   const handleSave = (row) => {
     const newData = [...dataSource];
     const index = newData.findIndex((item) => row.key === item.key);
@@ -167,6 +169,9 @@ const App = () => {
       }),
     };
   });
+  const handleAdd=()=>{
+    console.log(dataSource);
+  }
   return (
     <div>
       <Button
@@ -180,7 +185,7 @@ const App = () => {
       </Button>
       <Table
         components={components}
-        rowClassName={() => "editable-row"}
+        // rowClassName={() => "editable-row"}
         bordered
         dataSource={dataSource}
         columns={columns}
