@@ -5,7 +5,11 @@ import SiderBar from "./components/sider/SiderBar";
 import Modall from "./components/Modal/index";
 import Tabled from "./components/TableED/index";
 // import Page from "./components/Tab/index"
-import Page from "./components/form/index";
+// import Page from "./components/Tab/index"//tab切换
+// import Page from "./components/TableED/index"//table表格编辑
+// import Page from "./components/contex/index"//useContext上下文
+import Page from "./components/form/index"; //form表单
+
 import { Routes, Route } from "react-router-dom";
 
 function App() {
