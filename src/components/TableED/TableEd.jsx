@@ -25,6 +25,7 @@ const EditableCell = ({
   const [editing, setEditing] = useState(false);
   const inputRef = useRef(null);
   const form = useContext(EditableContext);
+  console.log("1111", title, editable, children, dataIndex);
   useEffect(() => {
     if (editing) {
       inputRef.current?.focus();
@@ -169,9 +170,9 @@ const App = () => {
       }),
     };
   });
-  const handleAdd=()=>{
+  const handleAdd = () => {
     console.log(dataSource);
-  }
+  };
   return (
     <div>
       <Button
