@@ -5,7 +5,15 @@
 // 4.看懂table的某一列可编辑-----解决
 // 5.字典表的显示问题
 import React, { useState } from "react";
-import { Form, InputNumber, Select, DatePicker } from "antd";
+import {
+  Form,
+  InputNumber,
+  Select,
+  DatePicker,
+  Input,
+  Table,
+  Button,
+} from "antd";
 import { data, SPV } from "./data";
 const App = () => {
   const currentTimestamp = Date.now();
@@ -14,12 +22,14 @@ const App = () => {
       <h1>数据表单</h1>
       <FormComponent />
       <Pick currentTimestamp={currentTimestamp} />
+      {/* <MyTable /> */}
+      <Inpit />
     </div>
   );
 };
 
 export default App;
-
+//多表单联动
 const FormComponent = () => {
   // const [formData, setFormData] = useState(data);
   const [formData] = Form.useForm();
@@ -109,6 +119,166 @@ const Pick = ({ currentTimestamp }) => {
       </Form.Item>
       <Form.Item>
         <button type="submit">提交</button>
+      </Form.Item>
+    </Form>
+  );
+};
+//计算公式
+// const MyTable = ({ data }) => {
+//   const [totalFunds, setTotalFunds] = useState(0);
+
+//   const handleInputChange = (e) => {
+//     setTotalFunds(Number(e.target.value));
+//   };
+
+//   const calculateAmounts = (data, totalFunds) => {
+//     const totalPcs = data.reduce(
+//       (acc, item) => acc + Math.max(item.pcsTotalAmt, 0),
+//       0
+//     );
+//     let remainingFunds = totalFunds;
+
+//     return data
+//       .map((item, index) => {
+//         if (item.pcsTotalAmt <= 0) {
+//           return { ...item, amount: 0 };
+//         } //直接给0
+//         const amount = (item.pcsTotalAmt / totalPcs) * totalFunds;
+//         remainingFunds -= amount;
+
+//         return { ...item, amount: parseFloat(amount.toFixed(2)) };
+//       })
+//       .map((item, index, arr) => {
+//         // Distribute remaining funds to the last valid row
+//         if (index === arr.length - 1 && arr[index].pcsTotalAmt > 0) {
+//           const amount = item.amount + remainingFunds;
+//           return { ...item, amount: parseFloat(amount.toFixed(2)) };
+//         }
+//         return item;
+//       });
+//   };
+
+//   const columns = [
+//     { title: "pcsTotalAmt", dataIndex: "pcsTotalAmt", key: "pcsTotalAmt" },
+//     { title: "amount", dataIndex: "amount", key: "amount" },
+//     { title: "share", dataIndex: "share", key: "share" },
+//   ];
+
+//   const processedData = calculateAmounts(data, totalFunds);
+
+//   return (
+//     <div>
+//       <Input
+//         type="number"
+//         placeholder="输入总资金"
+//         onChange={handleInputChange}
+//         style={{ marginBottom: 16 }}
+//       />
+//       <Table dataSource={processedData} columns={columns} rowKey="id" />
+//     </div>
+//   );
+// };
+const MyTable = ({ data }) => {
+  const [totalFunds, setTotalFunds] = useState(0);
+
+  const handleInputChange = (e) => {
+    setTotalFunds(Number(e.target.value));
+  };
+
+  const calculateAmounts = (data, totalFunds) => {
+    const totalPcs = data.reduce(
+      (acc, item) => acc + Math.max(item.pcsTotalAmt, 0),
+      0
+    );
+    let remainingFunds = totalFunds;
+
+    // First pass: Calculate initial amounts
+    const updatedData = data.map((item) => {
+      if (item.pcsTotalAmt <= 0) {
+        return { ...item, amount: 0 };
+      }
+      const amount = (item.pcsTotalAmt / totalPcs) * totalFunds;
+      remainingFunds -= amount;
+
+      return { ...item, amount: parseFloat(amount.toFixed(2)) };
+    });
+
+    // Second pass: Distribute remaining funds to the last valid row
+    for (let i = updatedData.length - 1; i >= 0; i--) {
+      if (updatedData[i].pcsTotalAmt > 0) {
+        const finalAmount = updatedData[i].amount + remainingFunds;
+        updatedData[i] = {
+          ...updatedData[i],
+          amount: parseFloat(finalAmount.toFixed(2)),
+        };
+        break; // Only update the last valid row
+      }
+    }
+
+    return updatedData;
+  };
+
+  const columns = [
+    { title: "pcsTotalAmt", dataIndex: "pcsTotalAmt", key: "pcsTotalAmt" },
+    { title: "amount", dataIndex: "amount", key: "amount" },
+    { title: "share", dataIndex: "share", key: "share" },
+  ];
+
+  const processedData = calculateAmounts(data, totalFunds);
+
+  return (
+    <div>
+      <Input
+        type="number"
+        placeholder="输入总资金"
+        onChange={handleInputChange}
+        style={{ marginBottom: 16 }}
+      />
+      <Table dataSource={processedData} columns={columns} rowKey="id" />
+    </div>
+  );
+};
+const Inpit = () => {
+  const [form] = Form.useForm(); // 使用 Form 实例
+
+  const handleBlur = () => {
+    const value = form.getFieldValue("amount");
+    if (value !== undefined && value !== null) {
+      const num = parseFloat(value);
+      console.log(num.toFixed(2));
+      if (!isNaN(num)) {
+        form.setFieldValue("amount", num.toFixed(2)); // 格式化为两位小数
+      }
+    }
+  };
+
+  return (
+    <Form
+      form={form}
+      name="custom_input_number_form"
+      initialValues={{ amount: undefined }} // 初始值为空
+    >
+      <Form.Item
+        name="amount"
+        label="Amount"
+        rules={[{ required: true, message: "Please input your amount!" }]}
+      >
+        <InputNumber
+          style={{ width: "100%" }}
+          min={0}
+          step={0.01}
+          formatter={(value) =>
+            value ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : ""
+          }
+          parser={(value) => (value ? value.replace(/,/g, "") : "")}
+          onBlur={handleBlur} // 在失去焦点时格式化输入
+        />
+      </Form.Item>
+
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
       </Form.Item>
     </Form>
   );
