@@ -17,6 +17,7 @@ import {
 import { data, SPV } from "./data";
 const App = () => {
   const currentTimestamp = Date.now();
+  const [value, setValue] = useState("");
   return (
     <div>
       <h1>数据表单</h1>
@@ -24,6 +25,7 @@ const App = () => {
       <Pick currentTimestamp={currentTimestamp} />
       {/* <MyTable /> */}
       <Inpit />
+      <NumberInput value={value} onChange={setValue} placeholder="请输入数字" />
     </div>
   );
 };
@@ -259,19 +261,27 @@ const Inpit = () => {
       initialValues={{ amount: undefined }} // 初始值为空
     >
       <Form.Item
-        name="amount"
-        label="Amount"
+        name="password"
+        label="password"
         rules={[{ required: true, message: "Please input your amount!" }]}
       >
         <InputNumber
-          style={{ width: "100%" }}
-          min={0}
-          step={0.01}
+          onBlur={(e) => {
+            console.log(e.target.value);
+            const value = form.getFieldValue("password");
+            // console.log(String(e.target.value).toFixed(2))
+            form.setFieldValue(
+              "password",
+              Number(value)
+                .toFixed(2)
+                .toString()
+                .replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, "$&,")
+            );
+          }}
           formatter={(value) =>
             value ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : ""
           }
           parser={(value) => (value ? value.replace(/,/g, "") : "")}
-          onBlur={handleBlur} // 在失去焦点时格式化输入
         />
       </Form.Item>
 
@@ -281,5 +291,50 @@ const Inpit = () => {
         </Button>
       </Form.Item>
     </Form>
+  );
+};
+const NumberInput = ({ value, onChange, ...rest }) => {
+  const formatNumber = (num) => {
+    if (!num) return "";
+
+    // 保留两位小数
+    const [integerPart, decimalPart] = num.split(".");
+    const formattedInteger = parseFloat(
+      integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    );
+
+    // 保留两位小数
+    const formattedDecimal = decimalPart
+      ? decimalPart.padEnd(2, "0").slice(0, 2)
+      : "00";
+
+    return `${formattedInteger}.${formattedDecimal}`;
+  };
+
+  const handleChange = (e) => {
+    const { value } = e.target;
+
+    // 只允许输入数字和小数点
+    const numericValue = value.replace(/[^0-9.]/g, "");
+
+    // 防止多于一个小数点
+    const parts = numericValue.split(".");
+    if (parts.length > 2) return;
+
+    onChange(formatNumber(numericValue));
+  };
+
+  const handleBlur = () => {
+    // 格式化为保留两位小数
+    onChange(formatNumber(value));
+  };
+
+  return (
+    <Input
+      {...rest}
+      value={value}
+      onChange={handleChange}
+      onBlur={handleBlur}
+    />
   );
 };
