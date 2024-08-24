@@ -4,7 +4,7 @@
 //3.父子直接通信，尝试使用一下redux
 // 4.看懂table的某一列可编辑-----解决
 // 5.字典表的显示问题
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Form,
   InputNumber,
@@ -16,16 +16,41 @@ import {
 } from "antd";
 import { data, SPV } from "./data";
 const App = () => {
-  const currentTimestamp = Date.now();
-  const [value, setValue] = useState("");
+  // const currentTimestamp = Date.now();
+  // const [value, setValue] = useState("");
+  const [form] = Form.useForm();
+  useEffect(() => {
+    // 使用 setFieldsValue 来设置初始值
+    form.setFieldsValue({
+      amount: "2000", // 设置初始值为 "2000"，会被格式化为 "2,000.00"
+    });
+  }, [form]);
+
+  const onFinish = (values) => {
+    console.log("Received values from form: ", values);
+  };
   return (
     <div>
       <h1>数据表单</h1>
-      <FormComponent />
-      <Pick currentTimestamp={currentTimestamp} />
+      {/* <FormComponent />
+      <Pick currentTimestamp={currentTimestamp} /> */}
       {/* <MyTable /> */}
-      <Inpit />
-      <NumberInput value={value} onChange={setValue} placeholder="请输入数字" />
+      {/* <Inpit /> */}
+      <Form form={form} onFinish={onFinish}>
+        <Form.Item
+          name="amount"
+          label="Amount"
+          rules={[{ required: true, message: "Please input an amount!" }]}
+        >
+          <FormattedInput />
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 };
@@ -293,46 +318,58 @@ const Inpit = () => {
     </Form>
   );
 };
-const NumberInput = ({ value, onChange, ...rest }) => {
-  const formatNumber = (num) => {
-    if (!num) return "";
-
-    // 保留两位小数
-    const [integerPart, decimalPart] = num.split(".");
-    const formattedInteger = parseFloat(
-      integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-    );
-
-    // 保留两位小数
-    const formattedDecimal = decimalPart
-      ? decimalPart.padEnd(2, "0").slice(0, 2)
-      : "00";
-
-    return `${formattedInteger}.${formattedDecimal}`;
+const FormattedInput = ({ value, onChange, ...props }) => {
+  const formatNumber = (value) => {
+    if (!value) return "";
+    const [integerPart, decimalPart] = String(value).split(".");
+    const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const formattedDecimal = (decimalPart || "00").slice(0, 2);
+    return `${formattedInteger}.${formattedDecimal.padEnd(2, "0")}`;
   };
 
+  const parseNumber = (value) => {
+    return value.replace(/,/g, "");
+  };
+  const [displayValue, setDisplayValue] = useState("");
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    setDisplayValue(formatNumber(value));
+  }, [value]);
+
   const handleChange = (e) => {
-    const { value } = e.target;
+    const inputValue = e.target.value;
+    const parsedValue = parseNumber(inputValue);
 
-    // 只允许输入数字和小数点
-    const numericValue = value.replace(/[^0-9.]/g, "");
+    // 记录光标位置
+    const caretPosition = e.target.selectionStart;
 
-    // 防止多于一个小数点
-    const parts = numericValue.split(".");
-    if (parts.length > 2) return;
+    setDisplayValue(parsedValue);
+    if (onChange) {
+      onChange(parsedValue);
+    }
 
-    onChange(formatNumber(numericValue));
+    // 重新设置光标位置
+    setTimeout(() => {
+      inputRef.current.setSelectionRange(caretPosition, caretPosition);
+    }, 0);
   };
 
   const handleBlur = () => {
-    // 格式化为保留两位小数
-    onChange(formatNumber(value));
+    const parsedValue = parseNumber(displayValue);
+    const formattedValue = formatNumber(parsedValue);
+
+    setDisplayValue(formattedValue);
+    if (onChange) {
+      onChange(parsedValue);
+    }
   };
 
   return (
     <Input
-      {...rest}
-      value={value}
+      {...props}
+      ref={inputRef}
+      value={displayValue}
       onChange={handleChange}
       onBlur={handleBlur}
     />

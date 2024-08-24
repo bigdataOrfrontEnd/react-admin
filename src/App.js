@@ -11,6 +11,7 @@ import Tabled from "./components/TableED/index";
 import Page from "./components/form/index"; //form表单
 
 import { Routes, Route } from "react-router-dom";
+import Chat from "./components/chat";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
       <div className="AppGlass">
         <SiderBar />
         <Routes>
-          {/* <Route path="/" element={<Login />}></Route> */}
+          <Route path="/" element={<Chat />}></Route>
           <Route path="/login" element={<MainDash />}></Route>
           <Route path="/expenss" element={<RightSide />}></Route>
           <Route path="/modal" element={<Modall />}></Route>
