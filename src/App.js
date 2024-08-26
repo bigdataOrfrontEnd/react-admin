@@ -11,7 +11,7 @@ import Tabled from "./components/TableED/index";
 import Page from "./components/form/index"; //form表单
 
 import { Routes, Route } from "react-router-dom";
-import Chat from "./components/chat";
+import Chat from "./components/chartComponets/index";
 
 function App() {
   return (
