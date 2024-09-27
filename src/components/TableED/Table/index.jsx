@@ -7,10 +7,10 @@ const EditableTable = () => {
   const [dataSource, setDataSource] = useState([
     {
       key: '1',
-      dueDate: null, // 指令到期日
-      orderAmount: 100, // 指令金额
-      orderBalance: 50, // 指令余额
-      orderShare: 50, // 指令份额 = 指令金额 - 指令余额
+      dueDate: null,
+      orderAmount: 100,
+      orderBalance: 50,
+      orderShare: 50,
     },
     {
       key: '2',
@@ -20,8 +20,6 @@ const EditableTable = () => {
       orderShare: -10,
     },
   ]);
-
-  const defaultDate = moment();  // 默认日期为当前日期
 
   const EditableCell = ({
     title,
@@ -35,15 +33,10 @@ const EditableTable = () => {
     let childNode = children;
 
     if (editable) {
-      // 动态判断是否可以编辑 dueDate
-      if (dataIndex === 'dueDate' && record.orderAmount - record.orderBalance < 0) {
-        // 如果 orderAmount - orderBalance 小于 0，不可编辑时显示默认时间
-        childNode = <div>{ record.dueDate}</div>;
-      } else if (dataIndex === 'dueDate') {
-        // 如果 orderAmount - orderBalance 大于等于 0，显示 DatePicker
+      if (dataIndex === 'dueDate') {
         childNode = (
           <Form.Item
-            name={[record.key, dataIndex]} // 确保每个单元格都是唯一的
+            name={[record.key, dataIndex]}
             style={{ margin: 0 }}
           >
             <DatePicker
@@ -54,16 +47,23 @@ const EditableTable = () => {
           </Form.Item>
         );
       } else {
-        // 处理 orderAmount 和 orderBalance 的编辑，使用 onBlur 或 onPressEnter 保存
         childNode = (
           <Form.Item
-            name={[record.key, dataIndex]} // 确保每个单元格都是唯一的
+            name={[record.key, dataIndex]}
             style={{ margin: 0 }}
           >
             <InputNumber
               defaultValue={record[dataIndex]}
-              onPressEnter={(e) => handleSave({ ...record, [dataIndex]: e.target.value })}
-              onBlur={(e) => handleSave({ ...record, [dataIndex]: e.target.value })}
+              formatter={value => {
+                if (value || value === 0) {
+                  return `${Number(value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+                }
+                return ''; // 当值为空时显示空字符串
+              }}
+              parser={value => value ? value.replace(/,/g, '') : ''}
+              onPressEnter={(e) => handleSave({ ...record, [dataIndex]: Number(e.target.value.replace(/,/g, '')) })}
+              onBlur={(e) => handleSave({ ...record, [dataIndex]: Number(e.target.value.replace(/,/g, '')) })}
+              style={{ width: '100%' }}
             />
           </Form.Item>
         );
@@ -77,38 +77,58 @@ const EditableTable = () => {
     const newData = [...dataSource];
     const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
-    // 更新 orderShare 为 orderAmount - orderBalance
-    const updatedRow = { ...item, ...row, orderShare: row.orderAmount - row.orderBalance };
+
+    const orderAmount = row.orderAmount !== undefined ? Number(row.orderAmount) : 0;
+    const orderBalance = row.orderBalance !== undefined ? Number(row.orderBalance) : 0;
+    
+    const updatedRow = {
+      ...item,
+      ...row,
+      orderShare: orderAmount - orderBalance,
+    };
+
     newData.splice(index, 1, updatedRow);
     setDataSource(newData);
   };
 
   const columns = [
     {
-      title: "Due Date", // 指令到期日
+      title: "Due Date",
       dataIndex: "dueDate",
       editable: true,
       render: (text, record) => {
         return record.dueDate
           ? moment(record.dueDate).format("YYYY-MM-DD")
-          : "Please select a date";
+          : ""; // 如果没有日期，则显示空字符串
       },
     },
     {
-      title: "Order Amount", // 指令金额
+      title: "Order Amount",
       dataIndex: "orderAmount",
       editable: true,
+      render: (text) => {
+        return text !== undefined && text !== null
+          ? `${Number(text).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+          : ''; // 如果数据为空，显示空字符串
+      },
     },
     {
-      title: "Order Balance", // 指令余额
+      title: "Order Balance",
       dataIndex: "orderBalance",
       editable: true,
+      render: (text) => {
+        return text !== undefined && text !== null
+          ? `${Number(text).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+          : ''; // 如果数据为空，显示空字符串
+      },
     },
     {
-      title: "Order Share", // 指令份额
+      title: "Order Share",
       dataIndex: "orderShare",
       render: (text, record) => {
-        return record.orderShare; // 动态显示 orderShare
+        return record.orderShare !== undefined && record.orderShare !== null && !isNaN(record.orderShare)
+          ? `${Number(record.orderShare).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+          : ''; // 如果为 NaN 或为空，显示空字符串
       },
     },
   ];

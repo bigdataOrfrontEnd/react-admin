@@ -10,7 +10,8 @@ import Tabled from "./components/TableED/index";
 // import Page from "./components/contex/index"//useContext上下文
 // import Page from "./components/coar/App"; //form表单
 // import Page from "./components/pdf/index"; //pdf
-import Page from "./components/TableED/Table/index"; //table
+// import Page from "./components/TableED/Table/index"; //table
+import Page from "./components/TableED/tableEd/index"; //tableEd
 
 import { Routes, Route } from "react-router-dom";
 import Chat from "./components/chartComponets/index";
