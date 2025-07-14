@@ -44,7 +44,7 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 			proxy: {
 				"/api": {
 					target: "http://localhost:9527", // easymock
-					changeOrigin: true,
+					changeOrigin: true
 					// rewrite: path => path.replace(/^\/api/, "")
 				}
 			}
@@ -70,13 +70,13 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 			viteEnv.VITE_REPORT && visualizer(),
 			// * gzip compress
 			viteEnv.VITE_BUILD_GZIP &&
-			viteCompression({
-				verbose: true,
-				disable: false,
-				threshold: 10240,
-				algorithm: "gzip",
-				ext: ".gz"
-			})
+				viteCompression({
+					verbose: true,
+					disable: false,
+					threshold: 10240,
+					algorithm: "gzip",
+					ext: ".gz"
+				})
 		],
 		esbuild: {
 			pure: viteEnv.VITE_DROP_CONSOLE ? ["console.log", "debugger"] : []
