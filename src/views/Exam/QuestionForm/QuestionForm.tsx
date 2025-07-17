@@ -80,12 +80,14 @@ const QuestionFormModal = forwardRef((props: QuestionFormModalProps, ref) => {
 			};
 			const res = await create(payload);
 
-			// if (res.code === "0") {
-			// }
-			console.log(res);
+			if (res.code === 0) {
+				message.success(res.msg);
+				setVisible(false);
+				props.onSuccess?.();
+			}
 
 			// 	message.success("题目保存成功");
-			// 	setVisible(false);
+			//
 			// 	form.resetFields();
 			// 	props.onSuccess?.();
 			// } else {

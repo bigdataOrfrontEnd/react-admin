@@ -98,6 +98,7 @@ const Exam = () => {
 			<QuestionFormModal
 				ref={modalRef}
 				onSuccess={() => {
+					getquesList();
 					console.log("保存成功后刷新列表或执行其他逻辑");
 				}}
 			/>
