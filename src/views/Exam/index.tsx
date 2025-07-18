@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "./index.less";
-import { Table, Button, Space } from "antd";
+import { Table, Button, Space, Tooltip } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { getquestionList } from "@/api/modules/question";
 import QuestionFormModal from "./QuestionForm/QuestionForm";
@@ -13,6 +13,7 @@ interface DataType {
 	level: string;
 	options: [answer: string, content: string, description: string];
 	type: string;
+	qyr: string;
 	updateTime: string;
 }
 const Exam = () => {
@@ -30,10 +31,23 @@ const Exam = () => {
 	};
 	const columns: TableColumnsType<DataType> = [
 		{
+			title: "真题年份",
+			dataIndex: "qyr",
+			key: "qyr",
+			align: "center"
+		},
+		{
 			title: "题目名称",
 			dataIndex: "name",
 			key: "name",
-			align: "center"
+			align: "center",
+			width: 200, // 固定列宽
+			ellipsis: true, // 自动省略显示
+			render: (text: string) => (
+				<Tooltip placement="topLeft" title={text}>
+					{text}
+				</Tooltip>
+			)
 		},
 		{
 			title: "创建者",

@@ -22,6 +22,7 @@ interface QuestionFormValues {
 	level: number;
 	type: number;
 	category: number;
+	qyr: string;
 	options: QuestionOption[];
 }
 
@@ -76,6 +77,7 @@ const QuestionFormModal = forwardRef((props: QuestionFormModalProps, ref) => {
 				level: values.level,
 				type: values.type,
 				category: values.category,
+				qyr: values.qyr,
 				options: values.options ?? []
 			};
 			const res = await create(payload);
@@ -110,6 +112,9 @@ const QuestionFormModal = forwardRef((props: QuestionFormModalProps, ref) => {
 			destroyOnClose
 		>
 			<Form form={form} layout="vertical" onFinish={handleSubmit} initialValues={{ options: [{ content: "", answer: false }] }}>
+				<Form.Item label="真题年限" name="qyr" rules={[{ required: true, message: "请输入真题时间" }]}>
+					<Input placeholder="请输入时间" />
+				</Form.Item>
 				<Form.Item label="题目名称" name="name" rules={[{ required: true, message: "请输入题目名称" }]}>
 					<Input.TextArea rows={3} placeholder="请输入题目名称" />
 				</Form.Item>
